@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Flow;
 import java.util.HashMap;
+
 /* TO DO LIST
  *  1) Finish rarity system "Hashmap string -> int" (just need to assign rarities not at random)
  *  2) make inventory system work (copies work, player inventory works)
@@ -25,18 +26,22 @@ import java.util.HashMap;
 public class MainScreen extends JFrame {
      
 
-    JPanel banner1, banner2, mainBanner1, mainBanner2, pull1, pull2, backButton, inventory, main, stars, charArt;
+    JPanel banner1, banner2, mainBanner1, mainBanner2, pull1, pull2, backButton, inventory, main, stars, charArt, teamBuilderButton;
     JPanel bigpanel = new JPanel();
     JPanel invpanel = new JPanel();
-    JPanel icons;
+    JPanel teamBuilderMain = new JPanel();
+    JPanel icons, icons2;
     JLabel name, grade;
     JLabel infoboard, timesPulled;
     JLabel bannerName1,bannerName2;
+    JLabel teamMember1, teamMember2, teamMember3, teamMember4;
+    Team team = new Team();
     ArrayList<Character> tempChars = new ArrayList<Character>();
     int hold = 0;
     int current = 0;
     boolean switcher = false;
-    ImageIcon placeholder = new ImageIcon("./resources/character/main/placeholder.png");
+    ImageIcon placeholder = new ImageIcon("project\\resources\\character\\main\\placeholder.png");
+
 
     final HashMap<String,Integer> rarityTable = new HashMap<String,Integer>(){
         { put("R",1);}
@@ -99,8 +104,8 @@ public class MainScreen extends JFrame {
     // check if character has already been palled so i can jsut add 1 to the copy count of the Character
     HashMap<Character,Boolean> hasBeenPulled = new HashMap<Character,Boolean>();
      //every person
-     Character joel = new Character("Joel Tsang", new ImageIcon("./resources/character/main/test.png"), placeholder,"lmao hahahahahahaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaa aaaaaaa aaaaaaaaaaaaaaaaaa");
-     Character fake = new Character("fake",new ImageIcon("./resources/character/main/joel-1.png"),placeholder,"random shi adsadasdasdasdasdasdasdasdasdsat");
+     Character joel = new Character("Joel Tsang", new ImageIcon("project\\resources\\character\\main\\test.png"), placeholder,"lmao hahahahahahaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaa aaaaaaa aaaaaaaaaaaaaaaaaa");
+     Character fake = new Character("fake",new ImageIcon("project\\resources\\character\\main\\joel-1.png"),placeholder,"random shi adsadasdasdasdasdasdasdasdasdsat");
      Character vincent = new Character("Vincent Wu",placeholder,placeholder,"im vincent");
      Character jasonh = new Character("Jason Huynh",placeholder,placeholder,"im jason");
      Character jimmy = new Character("Jimmy Liang",placeholder,placeholder,"i love joel tsang");
@@ -113,7 +118,7 @@ public class MainScreen extends JFrame {
      Character ruize = new Character("Ruize Tian", placeholder, placeholder, "im ruize");
      Character jolie = new Character("Jolie Hseih",placeholder,placeholder,"im jolie");
      Character amber = new Character("Amber Cai", placeholder, placeholder, "im amber");
-     Character avian = new Character("Avian Thai", new ImageIcon("./resources/character/AVIAN/ncGDEV_AVIAN_BANNER.png"), new ImageIcon("./resources/character/AVIAN/ncGDEV_AVIAN_ICON.png"), "im avian");
+     Character avian = new Character("Avian Thai", new ImageIcon("project\\resources\\character\\AVIAN\\ncGDEV_AVIAN_BANNER.png"), new ImageIcon("project\\resources\\character\\AVIAN\\ncGDEV_AVIAN_ICON.png"), "im avian");
      Character cory = new Character("Cory Tsan", placeholder, placeholder, "im cory");
      Character harrison = new Character("Harrison Duong", placeholder, placeholder, "im harrison");
      Character ethan11 = new Character("Ethan Dang",placeholder,placeholder,"im ethan",11);
@@ -128,7 +133,7 @@ public class MainScreen extends JFrame {
      Character matthew = new Character("Matthew Pena",placeholder,placeholder,"im matthew");
      Character jonathand = new Character("Jonathan Der",placeholder,placeholder,"im der");
      Character ruby = new Character("Ruby Yao", placeholder, placeholder, "im ruby");
-     Character colin = new Character("Colin Shiung",placeholder,placeholder,"im colin");
+     Character colin = new Character("Colin Shiung",placeholder,placeholder,"The main character.");
      Character noah = new Character("Noah Tsang",placeholder,placeholder,"im sailo",9);
      Character vicky = new Character("Vicky Huang",placeholder,placeholder,"im vicky");
      Character alton = new Character("Alton Qian",placeholder,placeholder,"im alton");
@@ -246,16 +251,25 @@ public class MainScreen extends JFrame {
     // dont mess with this stuff
     /*  How things are loaded
      *  
-     *  1) make 3 big panels (main,bigpanel,invpanel) 
+     *  1) make 4 big panels (main,bigpanel,invpanel, teambuilder) 
      *      main -> first screen
      *      bigpanel -> for the pull screen
      *      invpanel -> invetory screen
+     *      teambuilder -> build screen
      *  2) load all elements onto each panel
      *      bigpanel -> temporary panels are made for the banner art, these aren't saved anywhere
      *      invpanel -> icons -> these icons are not preloaded, they are creating whenever the switch to invpanel is made, 
      *  3) hiding the parent panel holding all elements hides everything
      */
+
+
     MainScreen(){
+
+        team.addMember(fake);
+        team.addMember(fake);
+        team.addMember(fake);
+        team.addMember(fake);
+
 
         // sets the window
         this.setTitle("Stupid");
@@ -264,7 +278,7 @@ public class MainScreen extends JFrame {
         this.setLayout(null);
         this.setSize(1080,720);
         this.setVisible(true);
-        // RNG.serialize("test.ser",playerInventory);
+         //RNG.serialize("test.ser",playerInventory);
         main = new JPanel();
         main.setBounds(0,0,1080,720);
         main.setVisible(true);
@@ -280,6 +294,48 @@ public class MainScreen extends JFrame {
         icons.setVisible(true);
         icons.setLayout(new FlowLayout(FlowLayout.LEFT,8,10)  );
         invpanel.add(icons);
+
+
+        //--------------------------------
+        teamBuilderMain.setBounds(0,0,1080,720);
+        teamBuilderMain.setVisible(false);
+        teamBuilderMain.setLayout(null);
+
+        teamMember1 = new JLabel();
+        teamMember1.setBackground(Color.RED);
+        teamMember1.setBounds(60,20,180,460);
+        teamMember1.setOpaque(true);
+
+        teamMember2 = new JLabel();
+        teamMember2.setBackground(Color.RED);
+        teamMember2.setBounds(280,20,180,460);
+        teamMember2.setOpaque(true);
+
+        teamMember3 = new JLabel();
+        teamMember3.setBackground(Color.RED);
+        teamMember3.setBounds(500,20,180,460);
+        teamMember3.setOpaque(true);
+
+        teamMember4 = new JLabel();
+        teamMember4.setBackground(Color.RED);
+        teamMember4.setBounds(720,20,180,460);
+        teamMember4.setOpaque(true);
+
+        
+
+        icons2 = new JPanel();
+        icons2.setBackground(Color.BLUE);
+        icons2.setBounds(0,500,1080,270);
+        icons2.setVisible(true);
+        icons2.setLayout(new FlowLayout(FlowLayout.CENTER,8,10)  );
+        
+        teamBuilderMain.add(icons2);
+        teamBuilderMain.add(teamMember1);
+        teamBuilderMain.add(teamMember2);
+        teamBuilderMain.add(teamMember3);
+        teamBuilderMain.add(teamMember4);
+
+        //--------------------------------
 
         stars = new JPanel();
         stars.setBackground(Color.PINK);
@@ -312,7 +368,7 @@ public class MainScreen extends JFrame {
         charArt.setBounds(570,10,510,666);
         charArt.setVisible(true);
         // charArt.setLayout(null);
-        ImageIcon tempy = scaleImage(new ImageIcon("./resources/character/AVIAN/ncGDEV_AVIAN_MAIN.png"),370,666);
+        ImageIcon tempy = scaleImage(new ImageIcon("project\\resources\\character\\AVIAN\\ncGDEV_AVIAN_MAIN.png"),370,666);
         JLabel charArtMain = new JLabel(tempy);
         charArtMain.setVisible(true);
         charArtMain.setBounds(new Rectangle(370,666));
@@ -395,12 +451,26 @@ public class MainScreen extends JFrame {
         pull2.setBackground(Color.BLACK);
         pull2.setBounds(657, 580, 175,45);
 
+        teamBuilderButton = new JPanel();
+        teamBuilderButton.setBackground(Color.BLACK);
+        teamBuilderButton.setBounds(474, 580, 175,45);
+        teamBuilderButton.addMouseListener(teamBuilderButtonMouseListener);
+        
+        //-------------------------- Team Members button
+        teamMember1.addMouseListener(teamMember1Listener);
+        teamMember2.addMouseListener(teamMember2Listener);
+        teamMember3.addMouseListener(teamMember3Listener);
+        teamMember4.addMouseListener(teamMember4Listener);
+
+
+        //-------------------------- 
+
         bigpanel.setBounds(60,140,950,400);
         bigpanel.setVisible(false);
         bigpanel.setLayout(new GridLayout(1,10,5,0));
        
         backButton = new JPanel();
-        backButton.setBounds(975,25,50,50);
+        backButton.setBounds(1010,25,50,50);
         backButton.setBackground(Color.BLACK);
         backButton.setVisible(false);
 
@@ -412,10 +482,12 @@ public class MainScreen extends JFrame {
         main.add(inventory);
         main.add(pull1);
         main.add(pull2);
+        main.add(teamBuilderButton);
         main.add(mainBanner1);
         main.add(mainBanner2);
         main.add(banner1);
         main.add(banner2);
+        this.add(teamBuilderMain);
         this.add(invpanel);
         this.add(main);
         repaint(); //THIS SINGLE LINE IS THE MOST OP THING
@@ -441,6 +513,7 @@ public class MainScreen extends JFrame {
                 rarity6.add(temp);
             }
         }
+
     }
     
     //mouse listeners make the panels do stuff when they get clicked
@@ -485,10 +558,98 @@ public class MainScreen extends JFrame {
         if(invpanel.isVisible()){
             icons.removeAll();
         }
+        if(teamBuilderMain.isVisible()){
+            icons2.removeAll();
+        }
         hide();
     }
     
    };
+
+   //------------------------- TEAM BUILDER
+
+   
+
+   MouseListener teamBuilderButtonMouseListener = new MouseAdapter() {
+    
+    @Override
+    public void mouseClicked(MouseEvent e){
+        hide();
+        backButton.addMouseListener(back);
+       // invpanel.removeAll();
+
+       addTeam(icons2);
+       System.out.println("yes");
+       teamBuilderMain.setVisible(true);
+    }
+   };
+
+   int teamSelectMember = 0;
+
+   MouseListener teamMember1Listener = new MouseAdapter() {
+        
+    @Override
+    public void mouseClicked(MouseEvent e){
+        teamMember1.setBounds(60,20,190,470);
+        teamMember2.setBounds(280,20,180,460);
+        teamMember3.setBounds(500,20,180,460);
+        teamMember4.setBounds(720,20,180,460);
+
+
+        System.out.println("Team Slot 1 Selected");
+        teamSelectMember = 0;
+
+    }
+   };
+
+   MouseListener teamMember2Listener = new MouseAdapter() {
+        
+    @Override
+    public void mouseClicked(MouseEvent e){
+        teamMember1.setBounds(60,20,180,460);
+        teamMember2.setBounds(280,20,190,470);
+        teamMember3.setBounds(500,20,180,460);
+        teamMember4.setBounds(720,20,180,460);
+
+
+        System.out.println("Team Slot 2 Selected");
+        teamSelectMember = 1;
+
+    }
+   };
+
+   MouseListener teamMember3Listener = new MouseAdapter() {
+        
+    @Override
+    public void mouseClicked(MouseEvent e){
+        teamMember1.setBounds(60,20,180,460);
+        teamMember2.setBounds(280,20,180,460);
+        teamMember3.setBounds(500,20,190,470);
+        teamMember4.setBounds(720,20,180,460);
+
+        System.out.println("Team Slot 3 Selected");
+        teamSelectMember = 2;
+
+    }
+   };
+   MouseListener teamMember4Listener = new MouseAdapter() {
+        
+    @Override
+    public void mouseClicked(MouseEvent e){
+        teamMember1.setBounds(60,20,180,460);
+        teamMember2.setBounds(280,20,180,460);
+        teamMember3.setBounds(500,20,180,460);
+        teamMember4.setBounds(720,20,190,470);
+
+        System.out.println("Team Slot 4 Selected");
+        teamSelectMember = 3;
+
+    }
+   };
+
+
+
+   //------------------------- 
 
    MouseListener invScreen = new MouseAdapter() {
     
@@ -498,7 +659,7 @@ public class MainScreen extends JFrame {
         backButton.addMouseListener(back);
        // invpanel.removeAll();
        
-        addIcon();
+        addIcon(icons);
         invpanel.setVisible(true);
     }
    };
@@ -511,6 +672,8 @@ public class MainScreen extends JFrame {
     }
    
         invpanel.setVisible(false);
+
+        teamBuilderMain.setVisible(false);
 
         backButton.setVisible(!backButton.isVisible());
 
@@ -527,10 +690,14 @@ public class MainScreen extends JFrame {
         }
         switcher = !switcher;
 
+        for(Character i : team.getTeamArray()){
+            System.out.println(i.getName());
+        }
+
    }
 
    //functio nthat adds all the icons (need to make it based off)
-    public void addIcon(){
+    public void addIcon(JPanel place){
         int length = allChar.size();
         current = 0;
         for(;current < length;current++){
@@ -560,13 +727,79 @@ public class MainScreen extends JFrame {
                 }
             };
             iIcon.addMouseListener(tempA); 
-            icons.add(iIcon);
+            place.add(iIcon);
+        }
+    }
+
+    //----=====-----
+    
+    public void addTeam(JPanel place){
+        int length = allChar.size();
+        current = 0;
+        for(;current < length;current++){
+        
+            
+            JLabel iIcon = new JLabel();
+            // iIcon.setBounds(0,0,10,10);
+            
+            ImageIcon im = allChar.get(current).getSmall(); //new ImageIcon("./resources/character/main/Blade.png");
+            Image imm = im.getImage();
+            Image newimg = imm.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH);
+            im = new ImageIcon(newimg); 
+            iIcon.setIcon(im); 
+            iIcon.setBackground(Color.BLACK);
+            iIcon.setVisible(true);
+
+            MouseAdapter tempA = new MouseAdapter(){
+                int temp = current;
+
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    Character tempChar = allChar.get(temp);
+                    team.replaceMember(teamSelectMember, tempChar);
+                    if(teamSelectMember == 0){
+                        if(tempChar != team.getTeamMember(1) && tempChar != team.getTeamMember(2) && tempChar != team.getTeamMember(3) ){
+                            team.replaceMember(0, tempChar);
+                            teamMember1.setIcon(new ImageIcon(tempChar.getMain().getImage().getScaledInstance(180, 420, Image.SCALE_DEFAULT)));
+                        }
+                        repaint();
+                    }
+                    else if(teamSelectMember == 1){
+                        if(tempChar != team.getTeamMember(0) && tempChar != team.getTeamMember(2) && tempChar != team.getTeamMember(3) ){
+                            team.replaceMember(1, tempChar);
+                            teamMember2.setIcon(new ImageIcon(tempChar.getMain().getImage().getScaledInstance(180, 420, Image.SCALE_DEFAULT)));
+                            repaint();
+                        }
+                    }
+                    else if(teamSelectMember == 2){
+                        if(tempChar != team.getTeamMember(0) && tempChar != team.getTeamMember(1) && tempChar != team.getTeamMember(3) ){
+                            team.replaceMember(2, tempChar);
+                            teamMember3.setIcon(new ImageIcon(tempChar.getMain().getImage().getScaledInstance(180, 420, Image.SCALE_DEFAULT)));
+                            repaint();
+                    }
+                    }
+                    else if(teamSelectMember == 3){
+                        if(tempChar != team.getTeamMember(0) && tempChar != team.getTeamMember(1) && tempChar != team.getTeamMember(2) ){
+                            team.replaceMember(3, tempChar);
+                            teamMember4.setIcon(new ImageIcon(tempChar.getMain().getImage().getScaledInstance(180, 420, Image.SCALE_DEFAULT)));
+                            repaint();
+                        }
+                    }
+                    else{
+                        System.out.println("Please Select a Slot"); 
+                    }
+                }
+            };
+
+            iIcon.addMouseListener(tempA); 
+            place.add(iIcon);
         }
     }
     
     
     // for the pulling part
     public void itspullingtime(){
+        System.out.println(colin.getStar());
         
         bigpanel.setVisible(true);
         for(int i = 0;i<10;i++){

@@ -27,7 +27,7 @@ public class RNG {
     }
     // so i dont have to type out the other stuff every time
     public static int randomize(int length){
-        return (int) (Math.random()*length);
+        return (int) (Math.random()*length + 1);
     }
 
     // not sure if this actually works 

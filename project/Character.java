@@ -32,7 +32,7 @@ public class Character implements java.io.Serializable {
         mainImage = main;
         lore = l;
         grade = g;
-        star = (int) (Math.random()*6);
+        star = (int) (Math.random()*6 + 1);
     }
 
     public ImageIcon getMain() {return mainImage;}
